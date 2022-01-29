@@ -19,10 +19,12 @@ import {
   MATRIX_O,
   MATRIX_S,
   MATRIX_T,
+  MATRIX_WALL,
   MATRIX_Z,
   O_MATRIX_COLOR,
   S_MATRIX_COLOR,
   T_MATRIX_COLOR,
+  WALL_MATRIX_COLOR,
   Z_MATRIX_COLOR,
 } from './constants';
 
@@ -33,6 +35,23 @@ const matrixBlock = (i: number, j: number, value: string): JSX.Element => {
         <Graphics
           draw={RectangleWithBorder({
             color: EMPTY_MATRIX_COLOR,
+            x: 0,
+            y: 0,
+            width: BLOCK_SIZE,
+            height: BLOCK_SIZE,
+            borderWidth: 2,
+            borderColor: MATRIX_BORDER_COLOR,
+          })}
+          x={MATRIX_LOCATION_X + j * BLOCK_SIZE}
+          y={MATRIX_LOCATION_Y + i * BLOCK_SIZE}
+          key={MATRIX_ELEMENT_KEYS[i][j]}
+        />
+      );
+    case MATRIX_WALL:
+      return (
+        <Graphics
+          draw={RectangleWithBorder({
+            color: WALL_MATRIX_COLOR,
             x: 0,
             y: 0,
             width: BLOCK_SIZE,
