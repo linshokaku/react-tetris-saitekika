@@ -51,6 +51,10 @@ const config = {
         allowAsStatement: true,
       },
     ],
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: ['**/*.test.ts', '**/*.test.tsx', '**/setupTests.ts'], 
+      optionalDependencies: false,
+    }]  
   }
 };
 

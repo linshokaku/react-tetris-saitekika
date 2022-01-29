@@ -1,10 +1,22 @@
-import { Stage, Sprite } from '@inlet/react-pixi';
+import { Stage } from '@inlet/react-pixi';
 import { VFC } from 'react';
+import { GAME_HEIGHT, GAME_WIDTH } from './constants';
+import Main from './main';
 
-const GameApp: VFC = () => (
-  <Stage width={1092} height={720}>
-    <Sprite image="https://s3-us-west-2.amazonaws.com/s.cdpn.io/693612/IaUrttj.png" />
-  </Stage>
-);
+const GameApp: VFC = () => {
+  const main = Main();
+
+  return (
+    <Stage
+      width={GAME_WIDTH}
+      height={GAME_HEIGHT}
+      options={{ backgroundColor: 0xeef1f5 }}
+      renderOnComponentChange
+      raf={false}
+    >
+      {main}
+    </Stage>
+  );
+};
 
 export default GameApp;
