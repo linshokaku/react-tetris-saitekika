@@ -55,6 +55,15 @@ export const MINO_L = 'L';
 export const MINO_J = 'J';
 export const MINO_S = 'S';
 export const MINO_Z = 'Z';
+export const ALL_MINOS = [
+  MINO_O,
+  MINO_I,
+  MINO_T,
+  MINO_L,
+  MINO_J,
+  MINO_S,
+  MINO_Z,
+];
 
 export const MATRIX_EMPTY = 'E';
 export const MATRIX_WALL = 'W';
@@ -133,6 +142,55 @@ export const ORIENTATION_NORTH = 'north';
 export const ORIENTATION_EAST = 'east';
 export const ORIENTATION_SOUTH = 'south';
 export const ORIENTATION_WEST = 'west';
+export const ALL_ORIENTATIONS = [
+  ORIENTATION_NORTH,
+  ORIENTATION_EAST,
+  ORIENTATION_SOUTH,
+  ORIENTATION_WEST,
+];
+
+export const MOVE_LEFT = 'l';
+export const MOVE_RIGHT = 'r';
+export const MOVE_CLOCK_WISE = 'cw';
+export const MOVE_COUNTER_CLOCK_WISE = 'ccw';
+export const ALL_MOVE = [
+  MOVE_LEFT,
+  MOVE_RIGHT,
+  MOVE_CLOCK_WISE,
+  MOVE_COUNTER_CLOCK_WISE,
+];
+
+export type OrientationTransitionType = {
+  [name: string]: {
+    [name: string]: string;
+  };
+};
+export const ORIENTATION_TRANSITION: OrientationTransitionType = {
+  north: {
+    l: ORIENTATION_NORTH,
+    r: ORIENTATION_NORTH,
+    cw: ORIENTATION_EAST,
+    ccw: ORIENTATION_WEST,
+  },
+  east: {
+    l: ORIENTATION_EAST,
+    r: ORIENTATION_EAST,
+    cw: ORIENTATION_SOUTH,
+    ccw: ORIENTATION_NORTH,
+  },
+  south: {
+    l: ORIENTATION_SOUTH,
+    r: ORIENTATION_SOUTH,
+    cw: ORIENTATION_WEST,
+    ccw: ORIENTATION_EAST,
+  },
+  west: {
+    l: ORIENTATION_WEST,
+    r: ORIENTATION_WEST,
+    cw: ORIENTATION_NORTH,
+    ccw: ORIENTATION_SOUTH,
+  },
+};
 
 export type ShapeType = {
   [name: string]: Array<Array<boolean>>;
@@ -412,3 +470,295 @@ export const MINO_SHAPE: MinoShapeType = {
     ],
   },
 };
+
+export type TetriminoRotationPointType = {
+  [name: string]: {
+    [name: string]: Array<{
+      x: number;
+      y: number;
+    }>;
+  };
+};
+export const TETRIMINO_ROTATION_POINT: TetriminoRotationPointType = {
+  O: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+  },
+  I: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 2, y: 3 },
+      { x: 5, y: 3 },
+      { x: 2, y: 3 },
+      { x: 5, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 2 },
+      { x: 4, y: 5 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 5, y: 3 },
+      { x: 2, y: 3 },
+      { x: 5, y: 4 },
+      { x: 2, y: 4 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 5 },
+      { x: 3, y: 2 },
+    ],
+  },
+  T: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 2, y: 3 },
+      { x: 2, y: 4 },
+      { x: 3, y: 1 },
+      { x: 2, y: 1 },
+    ],
+  },
+  L: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 2, y: 3 },
+      { x: 2, y: 4 },
+      { x: 3, y: 1 },
+      { x: 2, y: 1 },
+    ],
+  },
+  J: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 2, y: 3 },
+      { x: 2, y: 4 },
+      { x: 3, y: 1 },
+      { x: 2, y: 1 },
+    ],
+  },
+  S: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 2, y: 3 },
+      { x: 2, y: 4 },
+      { x: 3, y: 1 },
+      { x: 2, y: 1 },
+    ],
+  },
+  Z: {
+    north: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    east: [
+      { x: 3, y: 3 },
+      { x: 4, y: 3 },
+      { x: 4, y: 4 },
+      { x: 3, y: 1 },
+      { x: 4, y: 1 },
+    ],
+    south: [
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+      { x: 3, y: 3 },
+    ],
+    west: [
+      { x: 3, y: 3 },
+      { x: 2, y: 3 },
+      { x: 2, y: 4 },
+      { x: 3, y: 1 },
+      { x: 2, y: 1 },
+    ],
+  },
+};
+
+const calcRotationPointGap = (
+  mino: string,
+  srcOrientation: string,
+  dstOrientation: string,
+  index: number
+): { dx: number; dy: number } => {
+  const srcRotationPoint =
+    TETRIMINO_ROTATION_POINT[mino][srcOrientation][index];
+  const dstRotationPoint =
+    TETRIMINO_ROTATION_POINT[mino][dstOrientation][index];
+  const dx = srcRotationPoint.x - dstRotationPoint.x;
+  const dy = srcRotationPoint.y - dstRotationPoint.y;
+  return { dx, dy };
+};
+
+export type MoveTransitionCandidateType = {
+  [name: string]: Array<{ orientation: string; dx: number; dy: number }>;
+};
+export type OrientationTransitionCandidateType = {
+  [name: string]: MoveTransitionCandidateType;
+};
+export type TetriminoTranstionCandidateType = {
+  [name: string]: OrientationTransitionCandidateType;
+};
+export const TETRIMINO_TRANSITION_CANDIDATE: TetriminoTranstionCandidateType =
+  Object.assign(
+    {},
+    ...ALL_MINOS.map((mino: string) => ({
+      [mino]: Object.assign(
+        {},
+        ...ALL_ORIENTATIONS.map((orientation: string) => ({
+          [orientation]: Object.assign(
+            {},
+            ...ALL_MOVE.map((move: string) => {
+              const transitionOrientation =
+                ORIENTATION_TRANSITION[orientation][move];
+              switch (move) {
+                case MOVE_LEFT:
+                  return {
+                    [move]: [
+                      { orientation: transitionOrientation, dx: -1, dy: 0 },
+                    ],
+                  };
+                case MOVE_RIGHT:
+                  return {
+                    [move]: [
+                      { orientation: transitionOrientation, dx: 1, dy: 0 },
+                    ],
+                  };
+                default:
+                  return {
+                    [move]: Array<void>(5)
+                      .fill()
+                      .map((_: void, index: number) => ({
+                        orientation: transitionOrientation,
+                        ...calcRotationPointGap(
+                          mino,
+                          orientation,
+                          transitionOrientation,
+                          index
+                        ),
+                      })),
+                  };
+              }
+            })
+          ) as MoveTransitionCandidateType,
+        }))
+      ) as OrientationTransitionCandidateType,
+    }))
+  ) as TetriminoTranstionCandidateType;

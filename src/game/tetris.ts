@@ -115,11 +115,13 @@ class TetrisCore {
   }
 
   generationPhase(): void {
+    if (this.bag.index === 0) {
+      shuffle(this.bag.minos);
+    }
     const mino = this.bag.minos[this.bag.index];
     this.bag.index += 1;
     if (this.bag.index >= 7) {
       this.bag.index = 0;
-      shuffle(this.bag.minos);
     }
 
     this.window = STARTING_WINDOW[mino];
