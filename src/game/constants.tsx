@@ -1,3 +1,5 @@
+import rotateArray2D from './common/rotate_array_2d';
+
 export const DEVELOPMENT_MODE = false;
 
 export const GAME_WIDTH = 1092;
@@ -707,8 +709,14 @@ const calcRotationPointGap = (
   return { dx, dy };
 };
 
+export type CandidateType = {
+  orientation: string;
+  dx: number;
+  dy: number;
+  shape: Array<Array<boolean>>;
+};
 export type MoveTransitionCandidateType = {
-  [name: string]: Array<{ orientation: string; dx: number; dy: number }>;
+  [name: string]: Array<CandidateType>;
 };
 export type OrientationTransitionCandidateType = {
   [name: string]: MoveTransitionCandidateType;
@@ -725,35 +733,69 @@ export const TETRIMINO_TRANSITION_CANDIDATE: TetriminoTranstionCandidateType =
         ...ALL_ORIENTATIONS.map((orientation: string) => ({
           [orientation]: Object.assign(
             {},
-            ...ALL_MOVE.map((move: string) => {
+            ...ALL_MOVE.map((move: string): MoveTransitionCandidateType => {
               const transitionOrientation =
                 ORIENTATION_TRANSITION[orientation][move];
+              const ldx = -1;
+              const ldy = 0;
+              const lshape = rotateArray2D(
+                ldx,
+                ldy,
+                MINO_SHAPE[mino][transitionOrientation]
+              );
+              const rdx = 1;
+              const rdy = 0;
+              const rshape = rotateArray2D(
+                rdx,
+                rdy,
+                MINO_SHAPE[mino][transitionOrientation]
+              );
               switch (move) {
                 case MOVE_LEFT:
                   return {
                     [move]: [
-                      { orientation: transitionOrientation, dx: -1, dy: 0 },
+                      {
+                        orientation: transitionOrientation,
+                        dx: ldx,
+                        dy: ldy,
+                        shape: lshape,
+                      },
                     ],
                   };
                 case MOVE_RIGHT:
                   return {
                     [move]: [
-                      { orientation: transitionOrientation, dx: 1, dy: 0 },
+                      {
+                        orientation: transitionOrientation,
+                        dx: rdx,
+                        dy: rdy,
+                        shape: rshape,
+                      },
                     ],
                   };
                 default:
                   return {
                     [move]: Array<void>(5)
                       .fill()
-                      .map((_: void, index: number) => ({
-                        orientation: transitionOrientation,
-                        ...calcRotationPointGap(
+                      .map((_: void, index: number): CandidateType => {
+                        const { dx, dy } = calcRotationPointGap(
                           mino,
                           orientation,
                           transitionOrientation,
                           index
-                        ),
-                      })),
+                        );
+                        const shape = rotateArray2D(
+                          dx,
+                          dy,
+                          MINO_SHAPE[mino][transitionOrientation]
+                        );
+                        return {
+                          orientation: transitionOrientation,
+                          dx,
+                          dy,
+                          shape,
+                        };
+                      }),
                   };
               }
             })

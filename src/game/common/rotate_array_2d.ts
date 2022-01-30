@@ -1,11 +1,15 @@
-const rotate_array_2d = (x: number, y: number, array: Array<Array<any>>) => {
-  const x_rotate_array = array.map((row: Array<any>) =>
-    row.slice(-x).concat(row.slice(0, -x))
+const rotateArray2D = <T>(
+  x: number,
+  y: number,
+  array: Array<Array<T>>
+): Array<Array<T>> => {
+  const xRotateArray = array.map(
+    (row: Array<T>): Array<T> => row.slice(-x).concat(row.slice(0, -x))
   );
-  const x_y_rotate_array = x_rotate_array
+  const xyRotateArray = xRotateArray
     .slice(-y)
-    .concat(x_rotate_array.slice(0, -y));
-  return x_y_rotate_array;
+    .concat(xRotateArray.slice(0, -y));
+  return xyRotateArray;
 };
 
-export default rotate_array_2d;
+export default rotateArray2D;
