@@ -1,4 +1,5 @@
 import { Container, Graphics } from '@inlet/react-pixi';
+import { InteractionEvent } from 'pixi.js';
 import { useEffect, useRef, useState } from 'react';
 import { Rectangle } from './common/rectangle';
 import {
@@ -47,8 +48,23 @@ const Main = (): React.ReactElement => {
       })}
     />
   );
+
+  // eslint-disable-next-line
+  const handleMousedownEvent = async (_: InteractionEvent) => {
+    if (tetrisCore.current) {
+      tetrisCore.current.generationPhase();
+      setTetrisMatrix(tetrisCore.current.matrix);
+    }
+  };
   return (
-    <Container x={0} y={0} width={GAME_WIDTH} height={GAME_HEIGHT} interactive>
+    <Container
+      x={0}
+      y={0}
+      width={GAME_WIDTH}
+      height={GAME_HEIGHT}
+      interactive
+      mousedown={handleMousedownEvent}
+    >
       {background}
       {matrixComponent}
     </Container>
