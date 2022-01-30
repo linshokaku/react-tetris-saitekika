@@ -9,6 +9,7 @@ import {
   MINO_L,
   MINO_O,
   MINO_S,
+  MINO_SHAPE,
   MINO_T,
   MINO_Z,
   ORIENTATION_NORTH,
@@ -123,17 +124,18 @@ class TetrisCore {
 
     this.window = STARTING_WINDOW[mino];
     this.state = { mino, orientation: ORIENTATION_NORTH };
+    const shape = MINO_SHAPE[this.state.mino][this.state.orientation];
     for (
-      let { x } = this.window;
+      let { x } = this.window, i = 0;
       x < this.window.x + this.window.width;
-      x += 1
+      x += 1, i += 1
     ) {
       for (
-        let { y } = this.window;
+        let { y } = this.window, j = 0;
         y < this.window.y + this.window.height;
-        y += 1
+        y += 1, j += 1
       ) {
-        this.fallingMatrix[y][x] = mino;
+        this.fallingMatrix[y][x] = shape[j][i] ? mino : MATRIX_EMPTY;
       }
     }
   }
