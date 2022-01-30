@@ -15,6 +15,7 @@ import {
   ORIENTATION_NORTH,
   STARTING_WINDOW,
   TARGET_EMPTY,
+  TETRIMINO_TRANSITION_CANDIDATE,
   TETRIS_MATRIX_HEIGHT,
   TETRIS_MATRIX_WIDTH,
   TETRIS_WALL_SIZE,
@@ -126,7 +127,13 @@ class TetrisCore {
 
     this.window = STARTING_WINDOW[mino];
     this.state = { mino, orientation: ORIENTATION_NORTH };
-    const shape = MINO_SHAPE[this.state.mino][this.state.orientation];
+    this.drawFallingMatrix();
+  }
+
+  checkNoCollision(shape: Array<Array<boolean>>): boolean {
+    if (!this.window) {
+      return false;
+    }
     for (
       let { x } = this.window, i = 0;
       x < this.window.x + this.window.width;
@@ -137,7 +144,68 @@ class TetrisCore {
         y < this.window.y + this.window.height;
         y += 1, j += 1
       ) {
-        this.fallingMatrix[y][x] = shape[j][i] ? mino : MATRIX_EMPTY;
+        if (shape[j][i] && this.lockMatrix[y][x] !== MATRIX_EMPTY) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  clearFallingMatrix(): void {
+    if (!this.window) {
+      return;
+    }
+    for (
+      let { x } = this.window, i = 0;
+      x < this.window.x + this.window.width;
+      x += 1, i += 1
+    ) {
+      for (
+        let { y } = this.window, j = 0;
+        y < this.window.y + this.window.height;
+        y += 1, j += 1
+      ) {
+        this.fallingMatrix[y][x] = MATRIX_EMPTY;
+      }
+    }
+  }
+
+  drawFallingMatrix(): void {
+    if (!this.state || !this.window) {
+      return;
+    }
+    const shape = MINO_SHAPE[this.state.mino][this.state.orientation];
+
+    for (
+      let { x } = this.window, i = 0;
+      x < this.window.x + this.window.width;
+      x += 1, i += 1
+    ) {
+      for (
+        let { y } = this.window, j = 0;
+        y < this.window.y + this.window.height;
+        y += 1, j += 1
+      ) {
+        this.fallingMatrix[y][x] = shape[j][i] ? this.state.mino : MATRIX_EMPTY;
+      }
+    }
+  }
+
+  transition(move: string): void {
+    if (!this.state || !this.window) {
+      return;
+    }
+    const { mino, orientation } = this.state;
+    const candidate = TETRIMINO_TRANSITION_CANDIDATE[mino][orientation][move];
+    for (let i = 0; i < candidate.length; i += 1) {
+      if (this.checkNoCollision(candidate[i].shape)) {
+        this.clearFallingMatrix();
+        this.state.orientation = candidate[i].orientation;
+        this.window.x += candidate[i].dx;
+        this.window.y += candidate[i].dy;
+        this.drawFallingMatrix();
+        return;
       }
     }
   }

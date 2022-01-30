@@ -51,10 +51,12 @@ const Main = (): React.ReactElement => {
 
   // eslint-disable-next-line
   const handleMousedownEvent = async (_: InteractionEvent) => {
-    if (tetrisCore.current) {
-      tetrisCore.current.generationPhase();
-      setTetrisMatrix(tetrisCore.current.matrix);
+    if (!tetrisCore.current) {
+      return;
     }
+    tetrisCore.current.generationPhase();
+    setTetrisMatrix(tetrisCore.current.matrix);
+    /* eslint-disable no-await-in-loop */
   };
   return (
     <Container
