@@ -25,6 +25,8 @@ import {
 type StateType = { mino: string; orientation: string };
 
 class TetrisCore {
+  matrixUpdateCallback: (matrix: Array<Array<string>>) => void;
+
   ghost: Array<Array<string>>;
 
   target: Array<Array<string>>;
@@ -42,7 +44,8 @@ class TetrisCore {
     index: 0,
   };
 
-  constructor() {
+  constructor(matrixUpdateCallback: (matrix: Array<Array<string>>) => void) {
+    this.matrixUpdateCallback = matrixUpdateCallback;
     this.ghost = new Array<Array<string>>(TETRIS_MATRIX_HEIGHT);
     for (let i = 0; i < TETRIS_MATRIX_HEIGHT; i += 1) {
       this.ghost[i] = new Array<string>(TETRIS_MATRIX_WIDTH);
@@ -192,6 +195,10 @@ class TetrisCore {
     }
   }
 
+  updateMatrix(): void {
+    this.matrixUpdateCallback(this.matrix);
+  }
+
   transition(move: string): void {
     if (!this.state || !this.window) {
       return;
@@ -205,6 +212,7 @@ class TetrisCore {
         this.window.x += candidate[i].dx;
         this.window.y += candidate[i].dy;
         this.drawFallingMatrix();
+        this.updateMatrix();
         return;
       }
     }

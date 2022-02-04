@@ -12,6 +12,8 @@ import {
   TETRIS_VISIBLE_RIGHT,
   MOVE_LEFT,
   MOVE_RIGHT,
+  MOVE_CLOCK_WISE,
+  MOVE_COUNTER_CLOCK_WISE,
 } from './constants';
 import { matrixBlock } from './materials';
 import TetrisCore from './tetris';
@@ -22,13 +24,16 @@ const Main = (): React.ReactElement => {
 
   const leftKey = useRef<string>('ArrowLeft');
   const rightKey = useRef<string>('ArrowRight');
+  const upKey = useRef<string>('ArrowUp');
+  const cwKey = useRef<string>('KeyZ');
+  const ccwKey = useRef<string>('KeyA');
 
   const [tetrisMatrix, setTetrisMatrix] = useState<
     Array<Array<string>> | undefined
   >(undefined);
 
   useEffect(() => {
-    tetrisCore.current = new TetrisCore();
+    tetrisCore.current = new TetrisCore(setTetrisMatrix);
     setTetrisMatrix(tetrisCore.current.matrix);
   }, []);
 
@@ -76,11 +81,17 @@ const Main = (): React.ReactElement => {
     switch (event.code) {
       case leftKey.current:
         tetrisCore.current.transition(MOVE_LEFT);
-        setTetrisMatrix(tetrisCore.current.matrix);
         break;
       case rightKey.current:
         tetrisCore.current.transition(MOVE_RIGHT);
-        setTetrisMatrix(tetrisCore.current.matrix);
+        break;
+      case cwKey.current:
+        tetrisCore.current.transition(MOVE_CLOCK_WISE);
+        break;
+      case ccwKey.current:
+        tetrisCore.current.transition(MOVE_COUNTER_CLOCK_WISE);
+        break;
+      case upKey.current:
         break;
       default:
     }
