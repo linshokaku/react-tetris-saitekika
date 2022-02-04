@@ -1,6 +1,6 @@
-import { Container, Graphics } from '@inlet/react-pixi';
+import { Container, Graphics, Stage } from '@inlet/react-pixi';
 import { InteractionEvent } from 'pixi.js';
-import { useEffect, useRef, useState } from 'react';
+import { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 import { Rectangle } from './common/rectangle';
 import {
   GAME_WIDTH,
@@ -10,12 +10,18 @@ import {
   TETRIS_VISIBLE_BOTTOM,
   TETRIS_VISIBLE_LEFT,
   TETRIS_VISIBLE_RIGHT,
+  MOVE_LEFT,
+  MOVE_RIGHT,
 } from './constants';
 import { matrixBlock } from './materials';
 import TetrisCore from './tetris';
+import './main.css';
 
 const Main = (): React.ReactElement => {
   const tetrisCore = useRef<TetrisCore | undefined>(undefined);
+
+  const leftKey = useRef<string>('ArrowLeft');
+  const rightKey = useRef<string>('ArrowRight');
 
   const [tetrisMatrix, setTetrisMatrix] = useState<
     Array<Array<string>> | undefined
@@ -56,20 +62,51 @@ const Main = (): React.ReactElement => {
     }
     tetrisCore.current.generationPhase();
     setTetrisMatrix(tetrisCore.current.matrix);
-    /* eslint-disable no-await-in-loop */
+  };
+
+  const handleKeyDownEvent: KeyboardEventHandler<HTMLCanvasElement> = (
+    event
+  ) => {
+    if (event.repeat) return;
+
+    if (!tetrisCore.current) {
+      return;
+    }
+
+    switch (event.code) {
+      case leftKey.current:
+        tetrisCore.current.transition(MOVE_LEFT);
+        setTetrisMatrix(tetrisCore.current.matrix);
+        break;
+      case rightKey.current:
+        tetrisCore.current.transition(MOVE_RIGHT);
+        setTetrisMatrix(tetrisCore.current.matrix);
+        break;
+      default:
+    }
   };
   return (
-    <Container
-      x={0}
-      y={0}
+    <Stage
       width={GAME_WIDTH}
       height={GAME_HEIGHT}
-      interactive
-      mousedown={handleMousedownEvent}
+      options={{ backgroundColor: 0xeef1f5 }}
+      renderOnComponentChange
+      raf={false}
+      onKeyDown={handleKeyDownEvent}
+      tabIndex={-1}
     >
-      {background}
-      {matrixComponent}
-    </Container>
+      <Container
+        x={0}
+        y={0}
+        width={GAME_WIDTH}
+        height={GAME_HEIGHT}
+        interactive
+        mousedown={handleMousedownEvent}
+      >
+        {background}
+        {matrixComponent}
+      </Container>
+    </Stage>
   );
 };
 
